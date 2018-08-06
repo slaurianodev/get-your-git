@@ -23,8 +23,8 @@ function do_request(obj,url,method,func){
 
 function do_login(login,password){
     var obj = "{\"login\":\""+login+"\",\"password\":\""+password+"\"}";
-    var res=do_request(obj,url_service_login,"POST",function(res){login_github_data = res; console.log(login_github_data);});
-
+    var res=do_request(obj,url_service_login,"POST",function(res){login_github_data = res; console.log(login_github_data);} );
+    localStorage.setItem('login_data',login_github_data);
 }
 
 function do_repos(){
