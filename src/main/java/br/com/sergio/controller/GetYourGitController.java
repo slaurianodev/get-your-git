@@ -18,15 +18,19 @@ public class GetYourGitController {
 
     private static final Logger log = LoggerFactory.getLogger(GetYourGitController.class);
 
-    @RequestMapping(value = "/login",
-            method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public GitHubLogin login(@RequestBody Login login) {
+//    @CrossOrigin(origins = "http://localhost:8080")
+//    @RequestMapping(value = "/login",
+//            method = RequestMethod.POST,
+//            consumes = MediaType.APPLICATION_JSON_VALUE,
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/login")
+    public GitHubLogin login(@RequestParam Map<String,String> login) {
+        log.info("login: "+login.toString());
         GitHubServiceImpl service = new GitHubServiceImpl();
-        return service.login(login.getLogin(), login.getPassword());
+        return service.login(login.get("inputLogin"), login.get("inputPassword"));
     }
 
+    @CrossOrigin(origins = "http://localhost:8080")
     @RequestMapping(value = "/repos",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)

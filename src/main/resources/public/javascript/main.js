@@ -38,7 +38,7 @@ function send_user_login(){
         login = '';
         password='';
 
-        form = $('#login_form').serializeArray();
+        form = $('#login-form').serializeArray();
         for(i=0; i < form.length; i++){
         	if(form[i]['name'] == 'inputLogin'){
         		login =form[i]['value'];
@@ -51,7 +51,30 @@ function send_user_login(){
         console.log('password: '+password);
 
         if(login != '' && password != ''){
-            do_login(login,password);
-            do_repos();
+            var obj = "{\"inputLogin\":\""+login+"\",\"inputPassword\":\""+password+"\"}";
+            console.log(obj);
+            return obj;
         }
 }
+
+$(function(){
+    $('#login-form').submit(function() {
+        $.ajax({
+            type: 'POST',
+            url: "/login",
+            data: $('#login-form').serialize(),
+            success: function(json) {
+                res=JSON.stringify(json);
+                localStorage.setItem('login_data',res);
+                console.log("OK "+res);
+            },
+            error:function(json) {
+                res=JSON.stringify(json);
+                console.log("NOK "+res);
+            }
+        })
+        return false;
+    });
+});
+
+
