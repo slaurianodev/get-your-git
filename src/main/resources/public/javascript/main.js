@@ -1,7 +1,3 @@
-var login_github_data=null;
-var list_repos = null;
-
-
 $(function(){
     $('#login-form').submit(function() {
         $.ajax({
@@ -45,3 +41,44 @@ function fill_repo_data(){
     }
 }
 
+ function get_repos_data(){
+        login_json = JSON.parse(sessionStorage.getItem('login_data'));
+        $.ajax({
+            type: 'GET',
+            url: '/repos?repoUrl='+login_json['repos_url'],
+            //data: login_json['repos_url'],
+            success: function(json) {
+                result=JSON.stringify(json);
+                sessionStorage.setItem('repos_data',result);
+                console.log("OK "+result);
+                fill_repo_data();
+            },
+            error:function(json) {
+                result=JSON.stringify(json);
+                console.log("NOK "+result);
+            }
+        })
+        return false;
+}
+
+function get_creator_data(){
+    $.ajax({
+                type: 'GET',
+                url: '/creator',
+                success: function(json) {
+                    result=JSON.stringify(json);
+                    sessionStorage.setItem('creator_data',result);
+                    console.log("OK "+result);
+                    fill_creator_data();
+                },
+                error:function(json) {
+                    result=JSON.stringify(json);
+                    console.log("NOK "+result);
+                }
+            })
+            return false;
+}
+
+function fill_creator_data(){
+    creator_info = JSON.parse(sessionStorage.getItem('creator_data'));
+}

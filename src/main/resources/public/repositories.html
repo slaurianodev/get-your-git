@@ -20,7 +20,6 @@
         }
         body{background-color: #e0f3f7 !important;}
 
-
     </style>
     <script src="javascript/main.js"></script>
 </head>
@@ -47,31 +46,9 @@
     </div>
 </div>
 <script>
- $( document ).ready(function(){
-        login_json = JSON.parse(sessionStorage.getItem('login_data'));
-        $.ajax({
-            type: 'GET',
-            url: '/repos?repoUrl='+login_json['repos_url'],
-            //data: login_json['repos_url'],
-            success: function(json) {
-                result=JSON.stringify(json);
-                sessionStorage.setItem('repos_data',result);
-                console.log("OK "+result);
-                fill_repo_data();
-            },
-            error:function(json) {
-                result=JSON.stringify(json);
-                console.log("NOK "+result);
-            }
-        })
-        return false;
+$( document ).ready(function(){
+    get_repos_data();
 });
-
-
-
-
-
-
 
 </script>
 </body>
