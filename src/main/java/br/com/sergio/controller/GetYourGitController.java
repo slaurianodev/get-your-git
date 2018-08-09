@@ -25,7 +25,6 @@ public class GetYourGitController {
 
     @PostMapping("/login")
     public GitHubLogin login(@RequestParam Map<String,String> login) {
-        log.info("login: "+login.toString());
         GitHubServiceImpl service = new GitHubServiceImpl();
         return service.login(login.get("inputLogin"), login.get("inputPassword"));
     }

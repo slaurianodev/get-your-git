@@ -8,11 +8,12 @@ $(function(){
                 result=JSON.stringify(json);
                 sessionStorage.setItem('login_data',result);
                 window.location.replace("/repositories.html");
-                console.log("OK "+result);
             },
             error:function(json) {
-                res=JSON.stringify(json);
-                console.log("NOK "+result);
+                result=JSON.stringify(json);
+                response=JSON.parse(result);
+                responseText=JSON.parse(response['responseText']);
+                alert('Status: ' + response['statusText'] + ' Message: '+responseText['message']);
             }
         })
         return false;
@@ -46,16 +47,16 @@ function fill_repo_data(){
         $.ajax({
             type: 'GET',
             url: '/repos?repoUrl='+login_json['repos_url'],
-            //data: login_json['repos_url'],
             success: function(json) {
                 result=JSON.stringify(json);
                 sessionStorage.setItem('repos_data',result);
-                console.log("OK "+result);
                 fill_repo_data();
             },
             error:function(json) {
-                result=JSON.stringify(json);
-                console.log("NOK "+result);
+                 result=JSON.stringify(json);
+                 response=JSON.parse(result);
+                 responseText=JSON.parse(response['responseText']);
+                 alert('Status: ' + response['statusText'] + ' Message: '+responseText['message']);
             }
         })
         return false;
@@ -68,7 +69,6 @@ function get_creator_data(){
                 success: function(json) {
                     result=JSON.stringify(json);
                     sessionStorage.setItem('creator_data',result);
-                    console.log("OK "+result);
                     fill_creator_data();
                 },
                 error:function(json) {
@@ -81,4 +81,15 @@ function get_creator_data(){
 
 function fill_creator_data(){
     creator_info = JSON.parse(sessionStorage.getItem('creator_data'));
+    creator_user = creator_info['login'];
+    creator_link = creator_info['link'];
+    creator_source = creator_info['source'];
+
+    creator_footer = $(`<div class='footer-copyright text-center py-3'>Created by <a href='${creator_link}' >${creator_user}</a>, source code: <a href='${creator_source}'>here</a></div>`);
+    $('#creator-info').append(creator_footer);
+}
+
+function logout(){
+    sessionStorage.clear();
+    window.location.replace("/login.html");
 }
